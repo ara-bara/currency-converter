@@ -2,7 +2,7 @@
   "name": "currency-converter",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ara-bara.github.io/сurrency-сonverter",
+  "homepage": "https://ara-bara.github.io/currency-converter",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
