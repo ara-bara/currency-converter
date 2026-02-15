@@ -1,19 +1,20 @@
 # 💱 Currency Converter
 
-A simple currency converter built with React.
+A simple and clean currency converter built with **React**.
 
-🔗 Live Demo: https://ara-bara.github.io/Currency-Converter/
+🔗 **Live Demo:**  
+https://ara-bara.github.io/currency-converter/
 
 ---
 
 ## 🚀 Features
 
 - Convert between multiple currencies
-- Real-time exchange rates via API
+- Real-time exchange rates via external API
 - Two-way conversion
 - Loading state handling
-- Error handling
-- Clean and responsive UI
+- Error handling for failed requests
+- Responsive UI
 
 ---
 
@@ -26,10 +27,10 @@ A simple currency converter built with React.
 
 ---
 
-## 📦 Installation
+## 📦 Installation & Setup
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/ara-bara/Currency-Converter.git
-cd Currency-Converter
+git clone https://github.com/ara-bara/currency-converter.git
+cd currency-converter
