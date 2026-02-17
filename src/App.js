@@ -2,22 +2,38 @@ import { useEffect, useState } from "react";
 import "./index.css";
 
 export default function App() {
-  const [amount, setAmount] = useState(0);
+  const [amountFrom, setAmountFrom] = useState("");
+  const [amountTo, setAmountTo] = useState("");
+  const [activeInput, setActiveInput] = useState("from");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [rates, setRates] = useState(null);
   const [pair, setPair] = useState({ from: "USD", to: "EUR" });
 
-  function calculateResult(amount, pair, rates) {
-    if (amount <= 0) return 0;
-    if (!rates) return 0;
-    if (pair.from === pair.to) return Number(amount);
-    if (!(pair.to in rates)) return 0;
+  function convertFromTo(valueFrom, pair, rates) {
+    if (valueFrom === "" || !rates) return "";
+    const n = Number(valueFrom);
+    if (!Number.isFinite(n)) return "";
+    if (pair.from === pair.to) return valueFrom;
+    const rate = rates[pair.to];
+    if (rate == null) return "";
 
-    return amount * rates[pair.to];
+    return String((n * rate).toFixed(2));
   }
 
-  const result = calculateResult(amount, pair, rates);
+  function convertToFrom(valueTo, pair, rates) {
+    if (valueTo === "" || !rates) return "";
+
+    const n = Number(valueTo);
+    if (!Number.isFinite(n)) return "";
+
+    if (pair.from === pair.to) return valueTo;
+
+    const rate = rates[pair.to];
+    if (rate == null) return "";
+
+    return String((n / rate).toFixed(2));
+  }
 
   function swap() {
     setPair((prev) => ({ from: prev.to, to: prev.from }));
@@ -44,6 +60,15 @@ export default function App() {
     load();
   }, [pair.from]);
 
+  useEffect(() => {
+    if (!rates || loading || error) return;
+    if (activeInput === "from") {
+      setAmountTo(convertFromTo(amountFrom, pair, rates));
+    } else {
+      setAmountFrom(convertToFrom(amountTo, pair, rates));
+    }
+  }, [pair, activeInput, amountFrom, amountTo, rates, loading, error]);
+
   const defaultCurrencies = ["USD", "EUR", "UAH", "PLN"];
 
   const currencies = rates
@@ -62,8 +87,11 @@ export default function App() {
               <input
                 type="number"
                 className="input"
-                value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
+                value={amountFrom}
+                onChange={(e) => {
+                  setAmountFrom(e.target.value);
+                  setActiveInput("from");
+                }}
               />
             </div>
 
@@ -100,7 +128,15 @@ export default function App() {
                 ) : error ? (
                   <span className="error">{error}</span>
                 ) : (
-                  <span className="result">{result.toFixed(2)}</span>
+                  <input
+                    type="number"
+                    className="input"
+                    value={amountTo}
+                    onChange={(e) => {
+                      setAmountTo(e.target.value);
+                      setActiveInput("to");
+                    }}
+                  />
                 )}
               </div>
             </div>
